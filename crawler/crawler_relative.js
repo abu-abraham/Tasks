@@ -47,7 +47,7 @@ function extract(){
   const url = crawler_queue.shift();
   request(url, function(error, response, body) {
     if(error) {
-        console.log("Error: " + error);
+        console.error("Error: " + error);
         return;
     }
     if(response.statusCode === 200) {
@@ -73,7 +73,7 @@ const base_url = getBaseURL(initial_url);
 
 //Read the number of links to be extracted
 const no_of_links = process.argv[3]; 
-if (no_of_links === undefined){
+if (no_of_links === undefined || isNaN(no_of_links) || no_of_links < 0){
     console.error("Specify the number of links to be extracted as an argument while running the script, eg: node crawler.js https://www.bing.com 5");
     return;
 }
