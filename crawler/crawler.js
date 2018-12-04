@@ -35,24 +35,31 @@ function invalidURL(url){
 }
 
 function extract(){
-  if (crawler_queue.length<=0){
-    for (let site of visited_sites.values()){
-      console.log(site);
-    }
+  return new Promise((resolve, reject)=>{
+    const url = crawler_queue.shift();
+    console.log("Extracting: "+url)
+    request(url, function(error, response, body) {
+      if(error || response == undefined) {
+          console.error("Error: " + error);
+          reject();
+      }
+      if(response.statusCode === 200) {
+        let _body = cheerio.load(body);
+        getAllInternalLinks(_body);
+        resolve();
+      }      
+    });
+  });  
+}
+
+function repeat(){
+  if (crawler_queue.length <= 0){
     return;
   }
-  const url = crawler_queue.shift();
-  console.log("Extracting: "+url)
-  request(url, function(error, response, body) {
-    if(error) {
-        console.error("Error: " + error);
-        return;
-    }
-    if(response.statusCode === 200) {
-      let _body = cheerio.load(body);
-      getAllInternalLinks(_body);
-    }
-    extract();
+  extract().then(()=>{
+    repeat();
+  }).catch(()=>{
+      return;
   });
 }
 
@@ -80,6 +87,8 @@ let visited_sites  = new Set();
 
 addToQueue(initial_url);
 
-extract();
+repeat();
+
+
 
 
