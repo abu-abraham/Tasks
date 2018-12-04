@@ -28,13 +28,12 @@ function getBaseURL(url){
 }
 
 function invalidURL(url){
-  var pattern = new RegExp('^(https?:\\/\\/)?'+ 
-  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ 
-  '((\\d{1,3}\\.){3}\\d{1,3}))'+ 
-  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ 
-  '(\\?[;&a-z\\d%_.~+=-]*)?'+ 
-  '(\\#[-a-z\\d_]*)?$','i'); 
-  return !pattern.test(url);
+  try{
+    new URL(url);
+  } catch (e) {
+    return true;
+  }
+  return false;
 }
 
 function extract(){
@@ -72,7 +71,7 @@ if (initial_url === undefined){
   console.error("Specify the initial URL as an argument while running the script, eg: node crawler.js https://www.hackerrank.com 5");
   return;
 }  else if (invalidURL(initial_url)){
-  console.error("Specify url in correct format");
+  console.error("Specify url in correct format https://hackerrank.com");
   return;
 }
 

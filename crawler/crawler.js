@@ -25,13 +25,12 @@ function getBaseURL(url) {
 }
 
 function invalidURL(url){
-  let pattern = new RegExp('^(https?:\\/\\/)?'+ 
-  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ 
-  '((\\d{1,3}\\.){3}\\d{1,3}))'+ 
-  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ 
-  '(\\?[;&a-z\\d%_.~+=-]*)?'+ 
-  '(\\#[-a-z\\d_]*)?$','i'); 
-  return !pattern.test(url);
+  try{
+    new URL(url);
+  } catch (e) {
+    return true;
+  }
+  return false;
 }
 
 function extract(){
