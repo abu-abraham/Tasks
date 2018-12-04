@@ -8,5 +8,5 @@ The implementation of Task 1 can be found here.
  
  2 - Will try and select the specified n number of links that are not found before (crawler_relative.js).
 
-To run, install node dependencies and execute, example : node crawler.js https://bing.com 5
+To run, install node dependencies and execute, example : node crawler.js https://hackerrank.com 5
 
